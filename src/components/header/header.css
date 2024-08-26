@@ -1,0 +1,30 @@
+.headerContainer {
+    background: var(--Primary-0, #FFF);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header__btns {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.inputItemHeader {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+}
+
+.header__btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 90px;
+    border: 1px solid rgba(195, 212, 233, 0.40);
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease-in-out;
+}

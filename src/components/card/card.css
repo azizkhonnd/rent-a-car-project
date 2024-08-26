@@ -1,0 +1,113 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.card {
+    width: calc(25% - 16px);
+    display: flex;
+    flex-direction: column;
+    transition: 0.4s;
+    border-radius: 10px;
+    box-sizing: border-box;
+
+    &:hover {
+        background-color: #F3F5F8;
+        cursor: pointer;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+}
+
+
+.card-container h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.card__title {
+    color: #1A202C;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.6px;
+}
+
+.rent__btn_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 14px;
+    padding-right: 14px;
+}
+
+.span__text {
+    color: #90A3BF;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.car__item-title {
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: -0.28px;
+    text-transform: capitalize;
+    display: flex;
+    gap: 5px;
+
+}
+
+.car_details {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 26px;
+}
+
+.card__items-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rent__btn {
+    text-align: end;
+    display: flex;
+    width: 116px;
+    height: 44px;
+    padding: 0px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #3563E9;
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.32px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.card-container p {
+    margin: 8px 0;
+    color: #666;
+}
+
+.card-container .price {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+}

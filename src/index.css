@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+body {
+    background: #F6F7F9;
+}
+
+.container {
+    @apply w-full max-w-screen-xl mx-auto;
+    padding: 0 2rem;
+    @apply px-4 py-6;
+}
+
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-input-search-large .ant-input-search-button {
+    height: 39px;
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-form-item-vertical .ant-form-item-label>label,
+:where(.css-dev-only-do-not-override-1c0na6j).ant-col-24.ant-form-item-label>label,
+:where(.css-dev-only-do-not-override-1c0na6j).ant-col-xl-24.ant-form-item-label>label {
+    margin: 2px 0;
+}
+
+
+.authShadow {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-layout .ant-layout-sider-has-trigger {
+    padding-bottom: 424px;
+    position: fixed;
+}
