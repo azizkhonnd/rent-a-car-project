@@ -1,8 +1,9 @@
-import { Typography, Button, Form, Input } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import type { FormProps } from "antd";
 import { useSignUpMutation } from "../../../redux/api/auth-api";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
+const { Title } = Typography;
 
 type FieldType = {
   first_name: string;
@@ -32,9 +33,16 @@ const SignUp = () => {
   return (
     <div className="w-full authShadow  bg-[#f0f0f0] mt-20 flex items-center justify-center">
       <div className="w-[450px] min-h-[230px] bg-white rounded-lg p-7 mt-400">
-        <Typography style={{ fontSize: "30px", textAlign: "center", fontWeight: "500", letterSpacing: "1px", color: 'dodgerblue' }}>
+        <Title
+          level={3}
+          style={{
+            textAlign: "center",
+            color: "#1E90FF",
+            marginBottom: "24px",
+          }}
+        >
           Register
-        </Typography>
+        </Title>
         <div>
           <Form
             name="basic"

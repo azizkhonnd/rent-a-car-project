@@ -1,122 +1,99 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Typography, Button, Form, Input } from "antd";
-import type { FormProps } from "antd";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import  { useEffect } from "react";
+import { Typography, Button, Form, Input, message } from "antd";
 import { useSignInMutation } from "../../../redux/api/auth-api";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import type { SignInRequest } from "../../../redux/api/auth-api";
 
-type FieldType = {
-  email: string;
-  name: string;
-};
+const { Title, Text } = Typography;
 
-const Login = () => {
-  const [login, { data, isSuccess }] = useSignInMutation();
+const Login: React.FC = () => {
+  const [signIn, { data, isLoading, isSuccess, isError, error }] = useSignInMutation();
   const navigate = useNavigate();
-
-  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    login(values);
-  };
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    if (isSuccess) {
-      navigate(`/dashboard`);
+    if (isSuccess && data) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.payload));
+      message.success("Login successful!");
+      navigate("/dashboard");
     }
-  }, [isSuccess, navigate]);
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    if (isError && error) {
+      if ("data" in error) {
+        message.error((error.data as any).message || "Login failed!");
+      } else {
+        message.error("An unexpected error occurred!");
+      }
+    }
+  }, [isSuccess, isError, data, error, navigate]);
+
+  const onFinish = (values: SignInRequest) => {
+    signIn(values);
   };
 
   return (
-    <div className="w-full flex items-center justify-center bg-gradient-to-r mt-28">
-      <div className="w-[450px] min-h-[430px] bg-white rounded-lg shadow-lg p-8">
-        <Typography
+    <div className="flex items-center justify-center bg-gradient-to-r mt-[130px] to-blue-200">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        <Title
+          level={3}
           style={{
-            fontSize: "30px",
             textAlign: "center",
-            fontWeight: "500",
             color: "#1E90FF",
-            marginBottom: "20px",
-            letterSpacing: "0.5px",
+            marginBottom: "24px",
           }}
         >
           Login
-        </Typography>
+        </Title>
         <Form
-          name="login"
+          form={form}
+          name="login_form"
           layout="vertical"
-          initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
-          style={{ width: "100%" }}
         >
-          <Form.Item<FieldType>
+          <Form.Item
             label="Email"
             name="email"
             rules={[
-              { required: true, message: "Please input your email!" },
+              { required: true, message: "Please enter your email!" },
               { type: "email", message: "Please enter a valid email!" },
             ]}
-            style={{ marginBottom: "16px" }}
           >
-            <Input
-              style={{
-                height: "34px",
-                borderRadius: "5px",
-                borderColor: "#d9d9d9",
-              }}
-            />
+            <Input placeholder="Enter your email" />
           </Form.Item>
 
-          <Form.Item<FieldType>
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Please input your name!" }]}
-            style={{ marginBottom: "24px" }}
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              { required: true, message: "Please enter your password!" },
+              { min: 6, message: "Password must be at least 6 characters long!" },
+            ]}
           >
-            <Input
-              style={{
-                height: "34px",
-                borderRadius: "5px",
-                borderColor: "#d9d9d9",
-              }}
-            />
+            <Input.Password placeholder="Enter your password" />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ span: 24 }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={false}
-              style={{
-                backgroundColor: "#1E90FF",
-                color: "#fff",
-                width: "100%",
-                height: "34px",
-                borderRadius: "5px",
-                fontSize: "16px",
-                fontWeight: "500",
-                marginTop: "25px",
-                marginBottom: "10px",
-              }}
-            >
-              Login
-            </Button>
-          <div>
-            <Typography.Text className="mx-10 ">
-              Don't have an account?{" "}
-              <Typography.Link
-                onClick={() => navigate("/auth/sign-up")}
-                style={{ color: "#1E90FF", cursor: "pointer"  }}
-              >
-                Sign Up
-              </Typography.Link>
-            </Typography.Text>
-          </div>
-          </Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={isLoading}
+            style={{ width: "100%", marginTop: "10px" }}
+          >
+            Login
+          </Button>
         </Form>
+
+        <div style={{ textAlign: "center", marginTop: "16px" }}>
+          <Text>
+            Don't have an account?{" "}
+            <a onClick={() => navigate("/auth/sign-up")} style={{ color: "#1E90FF" }}>
+              Sign Up
+            </a>
+          </Text>
+        </div>
       </div>
     </div>
   );
