@@ -3,6 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Car {
   id: string;
   name: string;
+  thumbnail: string;
+  year: string;
+  fuel: string;
+  transmission: string;
+  seats: number;
+  rent_price: number;
 }
 
 interface LikedCarsState {
@@ -18,8 +24,11 @@ const likedCarsSlice = createSlice({
   initialState,
   reducers: {
     likeCar(state, action: PayloadAction<Car>) {
-      state.cars.push(action.payload);
-      localStorage.setItem("likedCars", JSON.stringify(state.cars));
+      const isAlreadyLiked = state.cars.some(car => car.id === action.payload.id);
+      if (!isAlreadyLiked) {
+        state.cars.push(action.payload);
+        localStorage.setItem("likedCars", JSON.stringify(state.cars));
+      }
     },
     unlikeCar(state, action: PayloadAction<string>) {
       state.cars = state.cars.filter(car => car.id !== action.payload);

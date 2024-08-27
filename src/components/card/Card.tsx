@@ -1,4 +1,5 @@
-import { AiFillHeart, AiOutlineHeart, AiOutlinePlusCircle } from "react-icons/ai";
+import React from "react";
+import { AiFillHeart, AiOutlineHeart, AiOutlinePlusCircle, AiOutlineDelete } from "react-icons/ai";
 import { HiUsers } from "react-icons/hi";
 import { BsFillFuelPumpFill } from "react-icons/bs";
 import { Skeleton } from '@mui/material';
@@ -6,29 +7,60 @@ import { useNavigate } from 'react-router-dom';
 import { Car } from '../../types/dataTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { likeCar } from '../../redux/slices/car-slice-liked';
+import { likeCar, unlikeCar } from '../../redux/slices/car-slice-liked';
 import './card.css';
+import { notification } from 'antd';
 
-const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => {
+const CardComponent = ({ car, isLoading, isLikedPage }: { car: Car, isLoading: boolean, isLikedPage?: boolean }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const likedCars = useSelector((state: RootState) => state.likedCars.cars);
 
+  const isLiked = likedCars.some(likedCar => likedCar.id === car.id);
+
   const handleCardClick = () => {
     if (!isLoading) {
-      navigate(`/cars/${car._id}`);
+      navigate(`/cars/${car.id}`);
     }
   };
 
   const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
     if (!isLoading) {
-      console.log('Heart button clicked', car);
-      dispatch(likeCar(car));
+      if (isLiked) {
+        dispatch(unlikeCar(car.id));
+        notification.success({
+          message: 'Car Unliked',
+          description: `${car.name} has been removed from your liked cars.`,
+          placement: 'topRight',
+          duration: 2,
+        });
+      } else {
+        dispatch(likeCar(car));
+        notification.success({
+          message: 'Car Liked',
+          description: `${car.name} has been added to your liked cars.`,
+          placement: 'topRight',
+          duration: 2,
+        });
+      }
     }
   };
 
-  const isLiked = likedCars.some(likedCar => likedCar.id === car._id);
+  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    if (!isLoading) {
+      dispatch(unlikeCar(car.id));
+      notification.success({
+        message: 'Car Removed',
+        description: `${car.name} has been removed from your liked cars.`,
+        placement: 'topRight',
+        duration: 2,
+      });
+    }
+  };
 
   return (
     <div className="card" onClick={handleCardClick}>
@@ -58,6 +90,25 @@ const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => 
             >
               {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
             </button>
+            {isLikedPage && (
+              <button
+                className="delete__btn"
+                onClick={handleDeleteClick}
+                style={{
+                  position: 'absolute',
+                  bottom: 10,
+                  right: 10,
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '22px',
+                  color: '#ccc',
+                  zIndex: 2,
+                }}
+              >
+                <AiOutlineDelete />
+              </button>
+            )}
           </>
         )}
 
