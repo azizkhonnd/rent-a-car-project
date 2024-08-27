@@ -21,7 +21,7 @@ const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => 
   };
 
   const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     if (!isLoading) {
       console.log('Heart button clicked', car);
       dispatch(likeCar(car));
@@ -33,14 +33,16 @@ const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => 
   return (
     <div className="card" onClick={handleCardClick}>
       <div className="card-container" style={{ width: 297, borderRadius: 10, overflow: 'hidden', backgroundColor: '#fff', position: 'relative' }}>
-        
+
         {isLoading ? (
           <Skeleton variant="rectangular" width="100%" height={160} />
         ) : (
           <>
+            <h3 className="card__title" style={{ marginLeft: 16, marginTop: 10, fontSize: 20 }}>{car.name}</h3>
+            <h3 className="card__title" style={{ marginLeft: 16, marginTop: 10, fontSize: 16, fontWeight: 500, color: '#90A3BF' }}>{car.year}</h3>
             <img src={car.thumbnail} alt={car.name} style={{ width: '100%', height: 160, objectFit: 'contain' }} />
-            <button 
-              className={`like__btn ${isLiked ? 'liked' : ''}`} 
+            <button
+              className={`like__btn ${isLiked ? 'liked' : ''}`}
               onClick={handleLikeClick}
               style={{
                 position: 'absolute',
@@ -51,7 +53,7 @@ const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => 
                 cursor: 'pointer',
                 fontSize: '22px',
                 color: isLiked ? 'red' : '#ccc',
-                zIndex: 2, 
+                zIndex: 2,
               }}
             >
               {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
