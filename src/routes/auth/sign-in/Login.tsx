@@ -105,11 +105,11 @@ const Login = () => {
               Login
             </Button>
           <div>
-            <Typography.Text>
+            <Typography.Text className="mx-10 ">
               Don't have an account?{" "}
               <Typography.Link
                 onClick={() => navigate("/auth/sign-up")}
-                style={{ color: "#1E90FF", cursor: "pointer",}}
+                style={{ color: "#1E90FF", cursor: "pointer"  }}
               >
                 Sign Up
               </Typography.Link>
