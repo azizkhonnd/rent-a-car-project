@@ -81,8 +81,10 @@ const Header = () => {
                                 <Input.Search size="large" placeholder="Search something here" enterButton />
                             </AutoComplete>
                         </div>
-                        <div className="header__btns">
-                            <button className="header__btn"><AiFillHeart size={26} /></button>
+                        <div className="header__btns container">
+                            <Link to='/liked-cars'>
+                                <button className="header__btn"><AiFillHeart size={26} /></button>
+                            </Link>
                             <button className="header__btn"><IoIosNotifications size={26} /></button>
                             <button className="header__btn"><IoIosSettings size={26} /></button>
                             <button className="header__btn"><BiUserCircle size={26} /></button>
