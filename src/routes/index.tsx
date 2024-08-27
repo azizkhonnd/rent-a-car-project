@@ -7,12 +7,13 @@ import Register from "./auth/sign-up/SignUp";
 import Login from "./auth/sign-in/Login";
 import OtpVerified from "./auth/otp-page/Otp";
 import Auth from "./auth/Auth";
+import LikedCars from './likedCar-page/LikedCars';
 
 const RouteController = () => {
   return useRoutes([
     {
       path: "",
-      element: <Home />
+      element: <Home />,
     },
     {
       path: "dashboard",
@@ -45,6 +46,10 @@ const RouteController = () => {
     {
       path: "otp-verified",
       element: <OtpVerified email={""} />
+    },
+    {
+      path: "liked-cars",
+      element: <LikedCars />
     }
   ]);
 };

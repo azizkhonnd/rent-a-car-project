@@ -61,5 +61,15 @@ export type UploadImages = {
 
 export type UploadImage = {
     message: string,
-    payload: string[]
+    payload: string
+}
+
+export type SignUpType = {
+    message: string,
+    payload: User
+}
+
+export type SignInType = {
+    message: string,
+    payload: User
 }

@@ -1,85 +1,109 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
-import { Form, Input, Button, message } from "antd";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { logIn } from "../../../redux/slices/auth-slice";
-import { Link, useNavigate } from "react-router-dom";
+import { Typography, Button, Form, Input } from "antd";
+import type { FormProps } from "antd";
+import { useSignUpMutation } from "../../../redux/api/auth-api";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const baseURL = import.meta.env.VITE_BASE_URL;
+type FieldType = {
+  first_name: string;
+  email: string;
+  password: string;
+};
 
-const Register: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+const SignUp = () => {
+  const [signUp, { data, isSuccess }] = useSignUpMutation();
+
   const navigate = useNavigate();
 
-  const onFinish = async (values: any) => {
-    console.log("Register form values:", values);
-    setLoading(true);
-    try {
-      const response = await axios.post(`${baseURL}/auth/sign-up`, values); 
-      if (response.data.success) {
-        const { token, user } = response.data.payload;
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    signUp(values);
+  };
 
-        dispatch(logIn({ token, user }));
-        message.success("Registration successful!");
-        navigate("/otp-verified");
-      } else {
-        message.error(response.data.message || "Registration failed");
-      }
-    } catch (error) {
-      message.error("An error occurred during registration.");
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (isSuccess) {
+      navigate(`/auth/verify-otp?email=${btoa(data.payload.email)}`);
     }
+  }, [isSuccess]);
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   return (
-    <div className="container flex flex-col authShadow rounded-md">
-      <h1 className="font-medium text-4xl text-center mb-6">Register</h1>
-      <Form onFinish={onFinish}>
-        <p className="mb-2">First Name</p>
-        <Form.Item
-          name="first_name"
-          rules={[{ required: true, message: "Please enter your first name!" }]}
-        >
-          <Input placeholder="First Name" />
-        </Form.Item>
-        <p className="mb-2">Email</p>
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Please enter your email!" }]}
-        >
-          <Input placeholder="Email" />
-        </Form.Item>
-        <p className="mb-2">Password</p>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "Please enter your password!" }]}
-        >
-          <Input.Password placeholder="Password" />
-        </Form.Item>
-        <div className="flex w-full justify-between">
-          <Button
-            className="w-full text-sm text-center mb-5"
-            disabled={loading}
-            type="primary"
-            htmlType="submit"
-            loading={loading}
+    <div className="w-full authShadow  bg-[#f0f0f0] mt-20 flex items-center justify-center">
+      <div className="w-[450px] min-h-[230px] bg-white rounded-lg p-7 mt-400">
+        <Typography style={{ fontSize: "30px", textAlign: "center", fontWeight: "normal", letterSpacing: "1px", color: 'dodgerblue' }}>
+          Register
+        </Typography>
+        <div>
+          <Form
+            name="basic"
+            layout="vertical"
+            style={{ maxWidth: "100%", marginTop: "20px" }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            Register
-          </Button>
+            <Form.Item<FieldType>
+              label="First Name"
+              name="first_name"
+              rules={[
+                { required: true, message: "Please input your first name!" },
+              ]}
+              style={{ marginBottom: "16px" }}
+            >
+              <Input style={{ height: "34px", borderRadius: "4px", borderColor: "#d9d9d9" }} />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: "Please input your email!" },
+                { type: "email", message: "Please enter a valid email!" },
+              ]}
+              style={{ marginBottom: "16px" }}
+            >
+              <Input style={{ height: "34px", borderRadius: "4px", borderColor: "#d9d9d9" }} />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              label="Password"
+              name="password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+                { min: 6, message: "Password must be at least 6 characters!" },
+              ]}
+              style={{ marginBottom: "24px" }}
+            >
+              <Input.Password style={{ height: "34px", borderRadius: "4px", borderColor: "#d9d9d9" }} />
+            </Form.Item>
+
+            <Form.Item wrapperCol={{ span: 24 }}>
+              <Button
+                style={{
+                  backgroundColor: "dodgerblue",
+                  color: "#fff",
+                  width: "100%",
+                  height: "34px",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  fontWeight: "normal",
+                  marginTop:'20px'
+                }}
+                type="primary"
+                htmlType="submit"
+                loading={false}
+              >
+                Register
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
-        <div className="flex gap-1">
-          Already have an account?
-          <Link to="/auth">
-            <p className="text-blue-500">Login</p>
-          </Link>
-        </div>
-      </Form>
+      </div>
     </div>
   );
 };
 
-export default Register;
+export default SignUp;

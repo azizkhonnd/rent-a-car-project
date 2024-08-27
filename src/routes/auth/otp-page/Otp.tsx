@@ -1,61 +1,107 @@
-import React, { useState } from "react";
-import { Row, Col, Input, Typography } from "antd";
+import React, { useEffect, useState } from 'react';
+import { Flex, Input, Typography, Button } from 'antd';
+import { useVerifyOtpMutation, useResendOtpMutation } from '../../../redux/api/auth-api';
+import { useSearchParams } from 'react-router-dom';
 
-const { Title } = Typography;
+type OTPProps = React.ComponentProps<typeof Input.OTP>;
 
-const OTPInput: React.FC<{ formatter: (str: string) => string }> = ({ formatter }) => {
-  const [otp, setOtp] = useState(new Array(6).fill(""));
+interface OtpProps {
+  email: string;  
+}
 
-  const handleChange = (value: string, index: number) => {
-    const formattedValue = formatter(value);
+const Otp: React.FC<OtpProps> = () => {
+  const [resentCount, setResetCount] = useState(0);
+  const [timer, setTimer] = useState(60);
+  const [searchParams] = useSearchParams();
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState('');
+  const [verifyOtp, { isLoading, isError, isSuccess }] = useVerifyOtpMutation();
+  const [resendOtp] = useResendOtpMutation();
 
-    if (/^\d*$/.test(formattedValue)) {
-      const newOtp = [...otp];
-      newOtp[index] = formattedValue;
-      setOtp(newOtp);
+  const onChange: OTPProps['onChange'] = (e) => {
+    console.log(e);
+    setOtp(e);
+  };
 
-      if (formattedValue && index < 5) {
-        const nextInput = document.getElementById(`otp-input-${index + 1}`);
-        nextInput?.focus();
+  useEffect(() => {
+    if(searchParams.get("email")){
+      setEmail(atob(searchParams.get("email")!))
+    }
+  }, [searchParams])
+
+  const handleSubmit = async () => {
+    try {
+      const response = await verifyOtp({ email, otp });
+      if (response) {
+        console.log('OTP Verified:', response);
       }
+    } catch (error) {
+      console.error('Verification failed:', error);
     }
   };
 
-  return (
-    <Row className="authShadow p-2 pt-[70px]" justify="center" gutter={10} style={{ marginBottom: "20px", width: '32%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '210px auto', height: '220px', borderRadius: '8px', padding: '20px' }}>
-      <Title level={5}>Please enter the 6-digit code received in your email</Title>
-      <Row gutter={10} justify="center" style={{ marginTop: '20px' }}>
-        {otp.map((value, index) => (
-          <Col key={index} span={3}>
-            <Input
-              id={`otp-input-${index}`}
-              value={value}
-              maxLength={1}
-              onChange={(e) => handleChange(e.target.value, index)}
-              style={{
-                width: "80%",
-                height: "50px",
-                textAlign: "center",
-                fontSize: "20px",
-              }}
-            />
-          </Col>
-        ))}
-      </Row>
-    </Row>
-  );
-};
-
-const App: React.FC = () => {
-  const sharedProps = {
-    formatter: (str: string) => str.toUpperCase(),
+  const sharedProps: OTPProps = {
+    value: otp,
+    onChange,
   };
 
+  const handleResend = async () => {
+    resendOtp({ email });
+    setResetCount(resentCount + 1);
+    setTimer(60);
+  };
+
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimer(timer => timer - 1)
+    }, 1000)
+
+    if(timer === 0){
+      clearInterval(timerInterval)
+    }
+
+    return () => clearInterval(timerInterval)
+
+  }, [timer, resentCount])
+
+  
+  console.log(resentCount)
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <OTPInput {...sharedProps} />
+    <div className='w-full h-screen bg-[#e4e4e4] flex items-center justify-center'>
+      <div className='w-[400px] min-h-[250px] bg-white rounded-lg p-7 flex items-center justify-center'>
+        <Flex gap="middle" align="flex-start" vertical>
+          <div>
+            <Typography className='text-center text-2xl'>Enter One Time Password</Typography>
+            <Typography className='text-center text-[12px] text-[gray]'>We sent it to {email}</Typography>
+          </div>
+          <div className='w-full text-center'>
+            <Input.OTP className='w-full text-center' formatter={(str) => str.toUpperCase()} {...sharedProps} />
+          </div>
+          <Button
+            type="primary"
+            className='w-full'
+            loading={isLoading}
+            onClick={handleSubmit}
+            disabled={!otp || isLoading}
+          >
+            Verify
+          </Button>
+          <Button
+            type="primary"
+            className='w-full'
+            loading={isLoading}
+            htmlType='button'
+            onClick={handleResend}
+            disabled={timer > 0}
+          >
+            Resend {timer ? "in " + timer + "s" : ""}
+          </Button>
+          {isError && <Typography className='text-red-500 text-center'>OTP verification failed.</Typography>}
+          {isSuccess && <Typography className='text-green-500 text-center'>OTP verified successfully!</Typography>}
+        </Flex>
+      </div>
     </div>
   );
 };
 
-export default App;
+export default Otp;

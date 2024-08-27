@@ -4,10 +4,15 @@ import { BsFillFuelPumpFill } from "react-icons/bs";
 import { Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Car } from '../../types/dataTypes';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { likeCar } from '../../redux/slices/car-slice-liked';
 import './card.css';
 
 const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const likedCars = useSelector((state: RootState) => state.likedCars.cars);
 
   const handleCardClick = () => {
     if (!isLoading) {
@@ -15,9 +20,18 @@ const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => 
     }
   };
 
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isLoading) {
+      dispatch(likeCar(car));
+    }
+  };
+
+  const isLiked = likedCars.some(likedCar => likedCar.id === car._id);
+
   return (
     <div className='card' onClick={handleCardClick}>
-      <div className='card-container ' style={{ width: 297, borderRadius: 10, overflow: 'hidden', backgroundColor: '#fff' }}>
+      <div className='card-container' style={{ width: 297, borderRadius: 10, overflow: 'hidden', backgroundColor: '#fff' }}>
         <div style={{ padding: 16 }}>
           {isLoading ? (
             <Skeleton variant="text" width={200} height={30} />
@@ -57,7 +71,12 @@ const CardComponent = ({ car, isLoading }: { car: Car, isLoading: boolean }) => 
             {isLoading ? (
               <Skeleton variant="rectangular" width={120} height={40} />
             ) : (
-              <button className='rent__btn'>Rent Now</button>
+              <>
+                <button className='rent__btn'>Rent Now</button>
+                <button className={`like__btn ${isLiked ? 'liked' : ''}`} onClick={handleLikeClick}>
+                  {isLiked ? 'Unlike' : 'Like'}
+                </button>
+              </>
             )}
           </div>
         </div>

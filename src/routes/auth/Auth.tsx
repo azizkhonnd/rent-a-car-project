@@ -6,8 +6,8 @@ const Auth = () => {
   const isRootPath = location.pathname === "/auth"; 
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="max-w-[450px] w-full p-12">
+    <div className="flex items-center justify-center ">
+      <div className="max-w-[450px] w-full p-12 ">
         {isRootPath ? <SignIn /> : <Outlet />} 
       </div>
     </div>

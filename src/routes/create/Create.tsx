@@ -6,6 +6,7 @@ import VisualInfo from './visual-info/VisualInfo';
 import TechnicalInfo from './technical-info/Technicalinfo';
 import CheckIn from './check-in/CheckIn';
 
+
 const Create = () => {
   const [current, setCurrent] = useState<number>(0);
 
@@ -83,22 +84,25 @@ const Create = () => {
   ];
 
   return (
-    <div>
-      <Steps
-        size="small"
-        current={current}
-        className='capitalize'
-        items={[
-          { title: 'Basic Info' },
-          { title: 'Visual Info' },
-          { title: 'Technical Info' },
-          { title: 'Check In' },
-        ]}
-      />
-      <div className="h-[500px] flex py-10">
-        {current < components.length && components[current].content(current, handleNext, handleBack)}
+    <>
+      
+      <div>
+        <Steps
+          size="small"
+          current={current}
+          className='capitalize'
+          items={[
+            { title: 'Basic Info' },
+            { title: 'Visual Info' },
+            { title: 'Technical Info' },
+            { title: 'Check In' },
+          ]}
+        />
+        <div className="h-[500px] flex py-10">
+          {current < components.length && components[current].content(current, handleNext, handleBack)}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
