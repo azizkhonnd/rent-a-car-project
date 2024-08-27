@@ -12,7 +12,6 @@ type FieldType = {
 
 const Login = () => {
   const [login, { data, isSuccess }] = useSignInMutation();
-
   const navigate = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
@@ -25,66 +24,99 @@ const Login = () => {
     }
   }, [isSuccess, navigate]);
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   return (
-    <div className="w-full h-screen bg-[#f0f0f0] flex items-center justify-center">
-      <div className="w-[450px] min-h-[430px] bg-white rounded-lg p-7">
-        <Typography className="text-4xl text-center font-bold tracking-wider">
+    <div className="w-full flex items-center justify-center bg-gradient-to-r mt-28">
+      <div className="w-[450px] min-h-[430px] bg-white rounded-lg shadow-lg p-8">
+        <Typography
+          style={{
+            fontSize: "30px",
+            textAlign: "center",
+            fontWeight: "500",
+            color: "#1E90FF",
+            marginBottom: "20px",
+            letterSpacing: "0.5px",
+          }}
+        >
           Login
         </Typography>
-        <div>
-          <Form
-            name="login"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+        <Form
+          name="login"
+          layout="vertical"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+          style={{ width: "100%" }}
+        >
+          <Form.Item<FieldType>
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: "Please input your email!" },
+              { type: "email", message: "Please enter a valid email!" },
+            ]}
+            style={{ marginBottom: "16px" }}
           >
-            <Form.Item<FieldType>
-              layout="vertical"
-              wrapperCol={{ offset: 0, span: 24 }}
-              label="Email"
-              name="email"
-              rules={[
-                { required: true, message: "Please input your email!" },
-                { type: "email", message: "Please enter a valid email!" },
-              ]}
+            <Input
+              style={{
+                height: "34px",
+                borderRadius: "5px",
+                borderColor: "#d9d9d9",
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item<FieldType>
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: "Please input your name!" }]}
+            style={{ marginBottom: "24px" }}
+          >
+            <Input
+              style={{
+                height: "34px",
+                borderRadius: "5px",
+                borderColor: "#d9d9d9",
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ span: 24 }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={false}
+              style={{
+                backgroundColor: "#1E90FF",
+                color: "#fff",
+                width: "100%",
+                height: "34px",
+                borderRadius: "5px",
+                fontSize: "16px",
+                fontWeight: "500",
+                marginTop: "25px",
+                marginBottom: "10px",
+              }}
             >
-              <Input />
-            </Form.Item>
-            <br />
-            <Form.Item<FieldType>
-              layout="vertical"
-              wrapperCol={{ offset: 0, span: 24 }}
-              label="Name"
-              name="name"
-              rules={[
-                { required: true, message: "Please input your name!" },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <br />
-            <Form.Item wrapperCol={{ offset: 9, span: 24 }}>
-              <Button
-                style={{ backgroundColor: "#111" }}
-                type="primary"
-                htmlType="submit"
-                loading={false}
+              Login
+            </Button>
+          <div>
+            <Typography.Text>
+              Don't have an account?{" "}
+              <Typography.Link
+                onClick={() => navigate("/auth/sign-up")}
+                style={{ color: "#1E90FF", cursor: "pointer",}}
               >
-                Login
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
+                Sign Up
+              </Typography.Link>
+            </Typography.Text>
+          </div>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );

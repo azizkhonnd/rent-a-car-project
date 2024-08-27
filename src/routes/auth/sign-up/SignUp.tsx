@@ -1,7 +1,7 @@
 import { Typography, Button, Form, Input } from "antd";
 import type { FormProps } from "antd";
 import { useSignUpMutation } from "../../../redux/api/auth-api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 
 type FieldType = {
@@ -90,7 +90,7 @@ const SignUp = () => {
                   borderRadius: "4px",
                   fontSize: "16px",
                   fontWeight: "normal",
-                  marginTop:'20px'
+                  marginTop: '20px'
                 }}
                 type="primary"
                 htmlType="submit"
@@ -99,6 +99,12 @@ const SignUp = () => {
                 Register
               </Button>
             </Form.Item>
+            <div style={{ marginTop: "20px", textAlign: "center" }}>
+              Already have an account?
+              <Link style={{ color: "dodgerblue", marginLeft: "5px" }} to="/auth">
+                Sign-in
+              </Link>
+            </div>
           </Form>
         </div>
       </div>
