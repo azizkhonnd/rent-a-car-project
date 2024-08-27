@@ -99,7 +99,7 @@ const SignUp = () => {
                 Register
               </Button>
             </Form.Item>
-            <div style={{ marginTop: "20px", textAlign: "center" }}>
+            <div style={{ marginTop: "-10px", textAlign: "center" }}>
               Already have an account?
               <Link style={{ color: "dodgerblue", marginLeft: "5px" }} to="/auth">
                 Sign-in
