@@ -12,7 +12,6 @@ export type User = {
 }
 
 export type Car = {
-    id: string
     _id: string,
     name: string,
     images: string[],
@@ -23,7 +22,7 @@ export type Car = {
     color: string,
     model: string,
     category: string,
-    year: number,
+    year: number | string,
     fuel: string,
     transmission: string,
     seats: number,

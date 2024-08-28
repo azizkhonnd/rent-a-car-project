@@ -3,12 +3,14 @@ import { useForm } from "antd/es/form/Form";
 import type { FormProps } from 'antd';
 import NextBack, { Props } from "../../../components/next-back/NextBack";
 import { useGetCategoriesQuery } from "../../../redux/api/categories-api";
-
+import { fillBasicInfo } from "../../../redux/slices/form-slice";
+import { useDispatch } from "react-redux";
 const { Item } = Form;
 const { TextArea } = Input;
 
 const BasicInfo = ({ current, handleNext, handleBack }: Props) => {
   const [form] = useForm()
+  const dispatch = useDispatch()
   const { data: categories } = useGetCategoriesQuery()
   type FieldType = {
     name?: string;
@@ -16,7 +18,7 @@ const BasicInfo = ({ current, handleNext, handleBack }: Props) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-
+    dispatch(fillBasicInfo(values))
     handleNext();
   };
 

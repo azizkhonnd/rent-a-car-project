@@ -2,6 +2,7 @@ import { Car } from "../../types/dataTypes";
 import { Typography } from "antd";
 import Card from "../card/Card";
 
+
 const {Title} = Typography
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 }
 
 const Cars = ({data, title, isLoading} : Props) => {
+   
+
   return (
     <div>
         <Title level={2}>{title}</Title>
@@ -21,7 +24,7 @@ const Cars = ({data, title, isLoading} : Props) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {
                 data?.map(car => 
-                    <Card key={car._id} car={car}/>
+                    <Card isLoading={isLoading}  key={car._id} car={car}/>
                 )
             }
             </div>

@@ -1,10 +1,10 @@
-import React from "react";
+
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import CarCard from "../../components/card/Card";
 import Header from "../../components/header/Header";
 
-const LikedCarsPage: React.FC = () => {
+const LikedCarsPage  = () => {
   const likedCars = useSelector((state: RootState) => state.likedCars.cars);
 
   return (
@@ -12,7 +12,7 @@ const LikedCarsPage: React.FC = () => {
       <Header />
       <div className="container liked-cars-page">
         {likedCars.length > 0 ? (
-          likedCars.map((car) => <CarCard key={car.id} car={car} isLikedPage />)
+          likedCars.map((car) => <CarCard key={car._id} car={car} isLikedPage />)
         ) : (
           <p>No cars liked yet.</p>
         )}

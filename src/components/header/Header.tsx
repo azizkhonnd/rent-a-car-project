@@ -5,7 +5,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { AiFillHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import './header.css'
-import { AutoComplete, Input, Layout, Menu } from 'antd';
+import { AutoComplete, Input, Layout, Menu, Badge } from 'antd'; // Import Badge
 import siteLogo from './site-logo.svg'
 import type { MenuProps } from 'antd';
 import {
@@ -16,6 +16,8 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const { Sider } = Layout;
 
@@ -51,17 +53,18 @@ const Header = () => {
     const [collapsed, setCollapsed] = useState(true);
     const location = useLocation();
     const isHomePage = location.pathname === '/';
+    const likedCarsCount = useSelector((state: RootState) => state.likedCars.cars.length); // Get liked cars count
 
     return (
         <div className='headerContainer'>
-            <Layout >
+            <Layout>
                 {!isHomePage && (
                     <Sider className="relative z-40" collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                         <div className="demo-logo-vertical" />
                         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
                     </Sider>
                 )}
-                <Layout >
+                <Layout>
                     <div className="container headerContainerItems flex justify-between">
                         <div className="siteLogo inputItemHeader">
                             <Link to='/'>
@@ -81,9 +84,13 @@ const Header = () => {
                                 <Input.Search size="large" placeholder="Search something here" enterButton />
                             </AutoComplete>
                         </div>
-                        <div className="header__btns ">
+                        <div className="header__btns">
                             <Link to='/liked-cars'>
-                                <button className="header__btn"><AiFillHeart size={26} /></button>
+                                <Badge count={likedCarsCount} overflowCount={9} offset={[0, 10]}> 
+                                    <button className="header__btn"><AiFillHeart size={26} />
+                                    
+                                    </button>
+                                </Badge>
                             </Link>
                             <button className="header__btn"><IoIosNotifications size={26} /></button>
                             <button className="header__btn"><IoIosSettings size={26} /></button>

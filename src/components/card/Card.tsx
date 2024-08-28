@@ -1,50 +1,56 @@
 import React from "react";
-import { AiFillHeart, AiOutlineHeart, AiOutlinePlusCircle, AiOutlineDelete } from "react-icons/ai";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlinePlusCircle,
+  AiOutlineDelete,
+} from "react-icons/ai";
 import { HiUsers } from "react-icons/hi";
 import { BsFillFuelPumpFill } from "react-icons/bs";
-import { Skeleton } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { Car } from '../../types/dataTypes';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { likeCar, unlikeCar } from '../../redux/slices/car-slice-liked';
-import './card.css';
-import { notification } from 'antd';
+import { Skeleton } from "@mui/material";
+import { Car } from "../../types/dataTypes";
+import { useDispatch } from "react-redux";
+import { likeCar, unlikeCar } from "../../redux/slices/car-slice-liked";
+import "./card.css";
+import { notification } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
-const CardComponent = ({ car, isLoading, isLikedPage }: { car: Car, isLoading: boolean, isLikedPage?: boolean }) => {
-  const navigate = useNavigate();
+
+const CardComponent = ({
+  car,
+  isLoading,
+  isLikedPage,
+}: {
+  car: Car;
+  isLoading: boolean;
+  isLikedPage?: boolean;
+}) => {
   const dispatch = useDispatch();
   const likedCars = useSelector((state: RootState) => state.likedCars.cars);
+  console.log(likedCars)
+  const liked = likedCars.some((likedCar) => likedCar._id === car._id);
+  console.log(liked);
 
-  const isLiked = likedCars.some(likedCar => likedCar.id === car.id);
-
-  const handleCardClick = () => {
-    if (!isLoading) {
-      navigate(`/cars/${car.id}`);
-    }
-  };
-
-  const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-
-    if (!isLoading) {
-      if (isLiked) {
-        dispatch(unlikeCar(car.id));
-        notification.success({
-          message: 'Car Unliked',
-          description: `${car.name} has been removed from your liked cars.`,
-          placement: 'topRight',
-          duration: 2,
-        });
-      } else {
-        dispatch(likeCar(car));
-        notification.success({
-          message: 'Car Liked',
-          description: `${car.name} has been added to your liked cars.`,
-          placement: 'topRight',
-          duration: 2,
-        });
-      }
+  const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>, car: Car, type: string) => {
+    e.stopPropagation()
+    if (type === "like") {
+      console.log(car )
+      dispatch(likeCar(car));
+      notification.success({
+        message: "Car Liked",
+        description: `${car.name} has been added to your liked cars.`,
+        placement: "topRight",
+        duration: 2,
+      });
+    } else {
+      dispatch(unlikeCar(car._id));
+      notification.info({
+        message: "Car Unliked",
+        description: `${car.name} has been removed from your liked cars.`,
+        placement: "topRight",
+        duration: 2,
+      });
     }
   };
 
@@ -52,57 +58,85 @@ const CardComponent = ({ car, isLoading, isLikedPage }: { car: Car, isLoading: b
     e.stopPropagation();
 
     if (!isLoading) {
-      dispatch(unlikeCar(car.id));
+      dispatch(unlikeCar(car._id));
       notification.success({
-        message: 'Car Removed',
+        message: "Car Removed",
         description: `${car.name} has been removed from your liked cars.`,
-        placement: 'topRight',
+        placement: "topRight",
         duration: 2,
       });
     }
   };
 
   return (
-    <div className="card" onClick={handleCardClick}>
-      <div className="card-container" style={{ width: 297, borderRadius: 10, overflow: 'hidden', backgroundColor: '#fff', position: 'relative' }}>
-
+    <div className="card">
+      <div
+        className="card-container"
+        style={{
+          width: 297,
+          borderRadius: 10,
+          overflow: "hidden",
+          backgroundColor: "#fff",
+          position: "relative",
+        }}
+      >
         {isLoading ? (
           <Skeleton variant="rectangular" width="100%" height={160} />
         ) : (
           <>
-            <h3 className="card__title" style={{ marginLeft: 16, marginTop: 10, fontSize: 20 }}>{car.name}</h3>
-            <h3 className="card__title" style={{ marginLeft: 16, marginTop: 10, fontSize: 16, fontWeight: 500, color: '#90A3BF' }}>{car.year}</h3>
-            <img src={car.thumbnail} alt={car.name} style={{ width: '100%', height: 160, objectFit: 'contain' }} />
-            <button
-              className={`like__btn ${isLiked ? 'liked' : ''}`}
-              onClick={handleLikeClick}
+            <h3
+              className="card__title"
+              style={{ marginLeft: 16, marginTop: 10, fontSize: 20 }}
+            >
+              {car.name}
+            </h3>
+            <h3
+              className="card__title"
               style={{
-                position: 'absolute',
+                marginLeft: 16,
+                marginTop: 10,
+                fontSize: 16,
+                fontWeight: 500,
+                color: "#90A3BF",
+              }}
+            >
+              {car.year}
+            </h3>
+            <img
+              src={car.thumbnail}
+              alt={car.name}
+              style={{ width: "100%", height: 160, objectFit: "contain" }}
+            />
+            <button
+              className={`like__btn ${liked ? "liked" : ""}`}
+              onClick={(e) => handleLikeClick(e, car, liked ? "unlike" : "like")}
+              style={{
+                position: "absolute",
                 top: 10,
                 right: 10,
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '22px',
-                color: isLiked ? 'red' : '#ccc',
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "22px",
+                color: liked ? "red" : "#ccc",
                 zIndex: 2,
               }}
             >
-              {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+              {liked ? <AiFillHeart /> : <AiOutlineHeart />}
             </button>
             {isLikedPage && (
               <button
                 className="delete__btn"
                 onClick={handleDeleteClick}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   bottom: 10,
                   right: 10,
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '22px',
-                  color: '#ccc',
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "22px",
+                  color: "#ccc",
                   zIndex: 2,
                 }}
               >
@@ -116,7 +150,9 @@ const CardComponent = ({ car, isLoading, isLikedPage }: { car: Car, isLoading: b
           {isLoading ? (
             <Skeleton variant="text" width={200} height={30} />
           ) : (
-            <h3 className="card__title" style={{ margin: 0, fontSize: 20 }}>{car.name}</h3>
+            <h3 className="card__title" style={{ margin: 0, fontSize: 20 }}>
+              {car.name}
+            </h3>
           )}
         </div>
 
@@ -129,26 +165,39 @@ const CardComponent = ({ car, isLoading, isLikedPage }: { car: Car, isLoading: b
             </>
           ) : (
             <>
-              <p className="car__item-title" style={{ color: '#90A3BF', fontSize: 15, marginTop: 8 }}>
-                <BsFillFuelPumpFill size={22} />{car.fuel}
+              <p
+                className="car__item-title"
+                style={{ color: "#90A3BF", fontSize: 15, marginTop: 8 }}
+              >
+                <BsFillFuelPumpFill size={22} />
+                {car.fuel}
               </p>
-              <p className="car__item-title" style={{ color: '#90A3BF', fontSize: 15, marginTop: 8 }}>
-                <AiOutlinePlusCircle size={22} />{car.transmission}
+              <p
+                className="car__item-title"
+                style={{ color: "#90A3BF", fontSize: 15, marginTop: 8 }}
+              >
+                <AiOutlinePlusCircle size={22} />
+                {car.transmission}
               </p>
-              <p className="car__item-title" style={{ color: '#90A3BF', fontSize: 15, marginTop: 8 }}>
-                <HiUsers size={22} />{car.seats} People
+              <p
+                className="car__item-title"
+                style={{ color: "#90A3BF", fontSize: 15, marginTop: 8 }}
+              >
+                <HiUsers size={22} />
+                {car.seats} People
               </p>
             </>
           )}
         </div>
 
         <div className="card__items-wrapper">
-          <div style={{ padding: '0 16px 16px ', textAlign: 'left' }}>
+          <div style={{ padding: "0 16px 16px ", textAlign: "left" }}>
             {isLoading ? (
               <Skeleton variant="text" width={80} height={30} />
             ) : (
-              <span style={{ fontSize: 20, fontWeight: 'bold' }}>
-                ${car.rent_price}<span className="span__text">/day</span>
+              <span style={{ fontSize: 20, fontWeight: "bold" }}>
+                ${car.rent_price}
+                <span className="span__text">/day</span>
               </span>
             )}
           </div>

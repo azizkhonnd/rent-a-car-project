@@ -34,18 +34,18 @@ const RouteController = () => {
       element: <Auth />,
       children: [
         {
+          path: "sign-up",
+          element: <Register />
+        },
+        {
           path: "sign-in",
           element: <Login />
         },
         {
-          path: "sign-up",
-          element: <Register />
-        }
+          path: "verify-otp",
+          element: <OtpVerified email={""} />
+        },
       ]
-    },
-    {
-      path: "otp-verified",
-      element: <OtpVerified email={""} />
     },
     {
       path: "liked-cars",
