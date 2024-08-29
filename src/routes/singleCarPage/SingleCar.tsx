@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef } from 'react';
 import { useParams } from "react-router-dom";
@@ -5,15 +6,23 @@ import { useGetCarsQuery } from "../../redux/api/car-api";
 import Header from "../../components/header/Header";
 import parse from "html-react-parser";
 import Skeleton from '@mui/material/Skeleton';
-import { Carousel } from 'antd';
+import { Carousel, notification } from 'antd';
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { likeCar, unlikeCar } from "../../redux/slices/car-slice-liked";
+import { RootState } from "../../redux/store";
 import "./SinglePage.css";
 
 const SingleCarPage = () => {
     const { id } = useParams();
     const { data, isLoading } = useGetCarsQuery();
-    const [mainImageIndex, setMainImageIndex] = useState(0);
+    const [ setMainImageIndex] = useState(0);
     const carouselRef = useRef(null);
+    const dispatch = useDispatch();
+
+    const likedCars = useSelector((state: RootState) => state.likedCars.cars);
     const car = data?.payload.find(car => car._id === id);
+    const liked = likedCars.some((likedCar) => likedCar._id === car?._id);
 
     if (isLoading) {
         return (
@@ -41,6 +50,27 @@ const SingleCarPage = () => {
 
     if (!car) return <div>Car not found</div>;
 
+    const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>, car: any, type: string) => {
+        e.stopPropagation();
+        if (type === "like") {
+            dispatch(likeCar(car));
+            notification.success({
+                message: "Car Liked",
+                description: `${car.name} has been added to your liked cars.`,
+                placement: "topRight",
+                duration: 2,
+            });
+        } else {
+            dispatch(unlikeCar(car._id));
+            notification.info({
+                message: "Car Unliked",
+                description: `${car.name} has been removed from your liked cars.`,
+                placement: "topRight",
+                duration: 2,
+            });
+        }
+    };
+
     const handleThumbnailClick = (index: React.SetStateAction<number>) => {
         setMainImageIndex(index);
         if (carouselRef.current) {
@@ -66,6 +96,7 @@ const SingleCarPage = () => {
                                 </div>
                             ))}
                         </Carousel>
+
                         <div className='w-full'>
                             <ul className="thumbnails-list flex gap-4 w-[100%] ">
                                 {car.images.map((image, index) => (
@@ -80,7 +111,27 @@ const SingleCarPage = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className="car-details min-h-[98%] bg-white w-[1200px] max-w-[600] p-6">
+                    <div className="car-details relative min-h-[98%] bg-white w-[1200px] max-w-[600] p-6">
+
+                      
+                        <button
+                            className={` ${liked ? "liked" : ""}`}
+                            onClick={(e) => handleLikeClick(e, car, liked ? "unlike" : "like")}
+                            style={{
+                                position: "absolute",
+                                top: 20,
+                                right: 20,
+                                background: "transparent",
+                                border: "none",
+                                cursor: "pointer",
+                                fontSize: "24px",
+                                color: liked ? "red" : "#ccc",
+                                zIndex: 2,
+                            }}
+                        >
+                            {liked ? <AiFillHeart /> : <AiOutlineHeart />}
+                        </button>
+
                         <h1 className="text-3xl font-bold mb-4">{car.name}</h1>
                         <p className="text-slate-600 font-normal mb-4">{parse(car.description)}</p>
                         <div className="car-info flex flex-wrap gap-6 mb-4">
@@ -110,6 +161,7 @@ const SingleCarPage = () => {
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                 </div>

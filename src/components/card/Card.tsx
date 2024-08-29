@@ -3,7 +3,6 @@ import {
   AiFillHeart,
   AiOutlineHeart,
   AiOutlinePlusCircle,
-  AiOutlineDelete,
 } from "react-icons/ai";
 import { HiUsers } from "react-icons/hi";
 import { BsFillFuelPumpFill } from "react-icons/bs";
@@ -20,14 +19,13 @@ import "./card.css";
 const CardComponent = ({
   car,
   isLoading,
-  isLikedPage,
 }: {
   car: Car;
   isLoading: boolean;
   isLikedPage?: boolean;
 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Use the useNavigate hook
+  const navigate = useNavigate(); 
 
   const likedCars = useSelector((state: RootState) => state.likedCars.cars);
   const liked = likedCars.some((likedCar) => likedCar._id === car._id);
@@ -37,7 +35,7 @@ const CardComponent = ({
     car: Car,
     type: string
   ) => {
-    e.stopPropagation(); // Prevent the card click event
+    e.stopPropagation(); 
 
     if (type === "like") {
       dispatch(likeCar(car));
@@ -58,21 +56,9 @@ const CardComponent = ({
     }
   };
 
-  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); 
-    if (!isLoading) {
-      dispatch(unlikeCar(car._id));
-      notification.success({
-        message: "Car Removed",
-        description: `${car.name} has been removed from your liked cars.`,
-        placement: "topRight",
-        duration: 2,
-      });
-    }
-  };
 
   const handleCardClick = () => {
-    
+
     navigate(`/cars/${car._id}`);
   };
 
@@ -132,25 +118,7 @@ const CardComponent = ({
             >
               {liked ? <AiFillHeart /> : <AiOutlineHeart />}
             </button>
-            {isLikedPage && (
-              <button
-                className="delete__btn"
-                onClick={handleDeleteClick}
-                style={{
-                  position: "absolute",
-                  bottom: 10,
-                  right: 10,
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: "22px",
-                  color: "#ccc",
-                  zIndex: 2,
-                }}
-              >
-                <AiOutlineDelete />
-              </button>
-            )}
+            
           </>
         )}
 
