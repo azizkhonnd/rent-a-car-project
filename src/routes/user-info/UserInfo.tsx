@@ -1,5 +1,3 @@
-
-
 import { Form, Input } from 'antd';
 import Header from "../../components/header/Header";
 import { useSelector } from 'react-redux';
@@ -9,7 +7,7 @@ import { Outlet } from 'react-router-dom';
 const defaultAvatarUrl = 'https://via.placeholder.com/150/000000/FFFFFF/?text=No+Avatar';
 
 const UserInfo = () => {
-    const userInfo = useSelector((state: RootState) => state.userInfo); 
+    const userInfo = useSelector((state: RootState) => state.userInfo);
     const avatarUrl = userInfo.avatar || defaultAvatarUrl;
 
     return (

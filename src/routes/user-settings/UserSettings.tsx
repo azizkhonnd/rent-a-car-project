@@ -1,4 +1,3 @@
-// src/pages/user-settings/UserSettings.tsx
 import { useState } from 'react';
 import { Form, Input, Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -10,14 +9,14 @@ import { Outlet } from 'react-router-dom';
 const UserSettings = () => {
     const dispatch = useDispatch();
 
-    const [userInfo] = useState({
+    const [userInfo, setUserInfo] = useState({
         name: 'John Doe',
         password: 'password123',
         photo: 'https://via.placeholder.com/150',
     });
 
     const handleFormSubmit = (values: { name: string; password: string; }) => {
-        dispatch(updateUserInfo(values));
+        dispatch(updateUserInfo({ first_name: values.name, password: values.password }));
         message.success('User info updated successfully!');
     };
 
@@ -59,7 +58,6 @@ const UserSettings = () => {
                         label="User Name"
                         name="name"
                         rules={[{ required: true, message: 'Please enter your name!' }]}
-                        style={{ width: '120%' }}
                     >
                         <Input placeholder="Enter your name" />
                     </Form.Item>
@@ -68,13 +66,12 @@ const UserSettings = () => {
                         label="Password"
                         name="password"
                         rules={[{ required: true, message: 'Please enter your password!' }]}
-                        style={{ width: '120%' }}
                     >
                         <Input.Password placeholder="Enter your password" />
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className="w-[120%]">
+                        <Button type="primary" htmlType="submit">
                             Update Info
                         </Button>
                     </Form.Item>
