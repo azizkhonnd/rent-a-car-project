@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Descriptions } from 'antd';
+import { Button, Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import axios from 'axios';
@@ -14,9 +14,39 @@ const CheckIn: React.FC<CheckInProps> = ({ handleNext, handleBack }) => {
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.checkIn);
 
+  // Define columns for the table
+  const columns = [
+    {
+      title: 'Field',
+      dataIndex: 'field',
+      key: 'field',
+    },
+    {
+      title: 'Value',
+      dataIndex: 'value',
+      key: 'value',
+    },
+  ];
+
+  // Prepare data for the table
+  const data = [
+    { key: '1', field: 'Car Company', value: formData.name || 'N/A' },
+    { key: '2', field: 'Car Model', value: formData.model || 'N/A' },
+    { key: '3', field: 'Car Category', value: formData.category || 'N/A' },
+    { key: '4', field: 'Status', value: formData.status || 'N/A' },
+    { key: '5', field: 'Year', value: formData.year || 'N/A' },
+    { key: '6', field: 'Mileage', value: formData.mileage || 'N/A' },
+    { key: '7', field: 'Engine Type', value: formData.engineType || 'N/A' },
+    { key: '8', field: 'Transmission', value: formData.transmission || 'N/A' },
+    { key: '9', field: 'Car Price', value: formData.carPrice || 'N/A' },
+    { key: '10', field: 'Car Rent Price', value: formData.carRentPrice || 'N/A' },
+    { key: '11', field: 'Seats', value: formData.seats || 'N/A' },
+    { key: '12', field: 'Capacity', value: formData.capacity || 'N/A' },
+    { key: '13', field: 'Fuel (litres)', value: formData.fuel || 'N/A' },
+  ];
+
   const handleFinish = async () => {
     try {
-     
       const response = await axios.post('/api/submit-checkin', formData);
       console.log('Server response:', response.data);
 
@@ -30,48 +60,14 @@ const CheckIn: React.FC<CheckInProps> = ({ handleNext, handleBack }) => {
   };
 
   return (
-    <div className="p-12">
-      <Descriptions title="Review Information" bordered>
-        <Descriptions.Item label="Car Company">
-          {formData.name || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Car Model">
-          {formData.model || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Car Category">
-          {formData.category || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Status">
-          {formData.status || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Year">
-          {formData.year || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Mileage">
-          {formData.mileage || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Engine Type">
-          {formData.engineType || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Transmission">
-          {formData.transmission || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Car Price">
-          {formData.carPrice || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Car Rent Price">
-          {formData.carRentPrice || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Seats">
-          {formData.seats || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Capacity">
-          {formData.capacity || 'N/A'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Fuel (litres)">
-          {formData.fuel || 'N/A'}
-        </Descriptions.Item>
-      </Descriptions>
+    <div className="p-12 w-full">
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        bordered
+        scroll={{ y: 300 }}  // Set the vertical scroll height as needed
+      />
 
       <div className="mt-8 flex justify-between">
         <Button
