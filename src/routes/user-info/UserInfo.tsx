@@ -44,8 +44,9 @@ const UserInfo = () => {
                         label="Password"
                         name="password"
                         rules={[{ required: true, message: 'Please enter your password!' }]}
+                       
                     >
-                        <Input.Password style={{ width: '130%' }} placeholder="Enter your password" disabled />
+                        <Input.Password style={{ width: '130%' }} placeholder="Enter your password"  />
                     </Form.Item>
                 </Form>
             </div>
