@@ -11,11 +11,11 @@ import { Skeleton } from "@mui/material";
 import { Car } from "../../types/dataTypes";
 import { useDispatch } from "react-redux";
 import { likeCar, unlikeCar } from "../../redux/slices/car-slice-liked";
-import "./card.css";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 import { notification } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-
+import "./card.css";
 
 const CardComponent = ({
   car,
@@ -27,15 +27,19 @@ const CardComponent = ({
   isLikedPage?: boolean;
 }) => {
   const dispatch = useDispatch();
-  const likedCars = useSelector((state: RootState) => state.likedCars.cars);
-  console.log(likedCars)
-  const liked = likedCars.some((likedCar) => likedCar._id === car._id);
-  console.log(liked);
+  const navigate = useNavigate(); // Use the useNavigate hook
 
-  const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>, car: Car, type: string) => {
-    e.stopPropagation()
+  const likedCars = useSelector((state: RootState) => state.likedCars.cars);
+  const liked = likedCars.some((likedCar) => likedCar._id === car._id);
+
+  const handleLikeClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    car: Car,
+    type: string
+  ) => {
+    e.stopPropagation(); // Prevent the card click event
+
     if (type === "like") {
-      console.log(car )
       dispatch(likeCar(car));
       notification.success({
         message: "Car Liked",
@@ -55,8 +59,7 @@ const CardComponent = ({
   };
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-
+    e.stopPropagation(); 
     if (!isLoading) {
       dispatch(unlikeCar(car._id));
       notification.success({
@@ -68,8 +71,13 @@ const CardComponent = ({
     }
   };
 
+  const handleCardClick = () => {
+    
+    navigate(`/cars/${car._id}`);
+  };
+
   return (
-    <div className="card">
+    <div className="card" onClick={handleCardClick} style={{ cursor: "pointer" }}>
       <div
         className="card-container"
         style={{
