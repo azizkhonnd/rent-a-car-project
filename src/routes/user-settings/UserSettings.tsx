@@ -1,32 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import Header from "../../components/header/Header";
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom'; // Import Outlet to render nested routes
+import Header from '../../components/header/Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../redux/store'; 
+import { setUserInfo } from '../../slices/user-slice'; 
 
 const UserSettings = () => {
-    const [userInfo, setUserInfo] = useState({
-        name: 'John Doe',
-        password: 'password123',
-        photo: 'https://via.placeholder.com/150',
-    });
+    const dispatch = useDispatch<AppDispatch>();
+    const userInfo = useSelector((state: RootState) => state.user);
 
-    const handleFormSubmit = (values: { name: any; password: any; }) => {
-        setUserInfo((prev) => ({
-            ...prev,
-            name: values.name,
-            password: values.password,
-        }));
+    const handleFormSubmit = (values: { name: string; password: string }) => {
+        dispatch(setUserInfo(values));
         message.success('User info updated successfully!');
     };
 
-    const handlePhotoUpload = (info: { file: { status: string; originFileObj: Blob | MediaSource; }; }) => {
+    const handlePhotoUpload = (info: { file: { status: string; originFileObj: Blob | MediaSource } }) => {
         if (info.file.status === 'done') {
-            setUserInfo((prev) => ({
-                ...prev,
-                photo: URL.createObjectURL(info.file.originFileObj),
-            }));
+            const photoUrl = URL.createObjectURL(info.file.originFileObj);
+            dispatch(setUserInfo({ photo: photoUrl }));
             message.success('Photo uploaded successfully!');
         }
     };
@@ -56,8 +47,8 @@ const UserSettings = () => {
                                 alt="user"
                                 style={{ width: '150px', height: '100px', borderRadius: '50%' }}
                             />
+                            <Button icon={<UploadOutlined />}>Change Photo</Button>
                         </Upload>
-                        <Button icon={<UploadOutlined />}>Change Photo</Button>
                     </Form.Item>
 
                     <Form.Item
@@ -85,7 +76,6 @@ const UserSettings = () => {
                     </Form.Item>
                 </Form>
             </div>
-            <Outlet /> 
         </>
     );
 };
