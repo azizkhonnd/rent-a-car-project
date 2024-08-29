@@ -1,23 +1,30 @@
+// src/pages/user-settings/UserSettings.tsx
+import { useState } from 'react';
 import { Form, Input, Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import Header from '../../components/header/Header';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../../redux/store'; 
-import { setUserInfo } from '../../slices/user-slice'; 
+import Header from "../../components/header/Header";
+import { useDispatch } from 'react-redux';
+import { updateUserInfo } from '../../redux/slices/user-slice';
+import { Outlet } from 'react-router-dom';
 
 const UserSettings = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const userInfo = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
 
-    const handleFormSubmit = (values: { name: string; password: string }) => {
-        dispatch(setUserInfo(values));
+    const [userInfo] = useState({
+        name: 'John Doe',
+        password: 'password123',
+        photo: 'https://via.placeholder.com/150',
+    });
+
+    const handleFormSubmit = (values: { name: string; password: string; }) => {
+        dispatch(updateUserInfo(values));
         message.success('User info updated successfully!');
     };
 
-    const handlePhotoUpload = (info: { file: { status: string; originFileObj: Blob | MediaSource } }) => {
+    const handlePhotoUpload = (info: { file: { status: string; originFileObj: Blob | MediaSource; }; }) => {
         if (info.file.status === 'done') {
             const photoUrl = URL.createObjectURL(info.file.originFileObj);
-            dispatch(setUserInfo({ photo: photoUrl }));
+            dispatch(updateUserInfo({ avatar: photoUrl }));
             message.success('Photo uploaded successfully!');
         }
     };
@@ -28,10 +35,7 @@ const UserSettings = () => {
             <div className="container authShadow" style={{ maxWidth: '470px', margin: '80px auto', paddingTop: '20px', borderRadius: '6px', paddingRight: '40px' }}>
                 <Form
                     layout="vertical"
-                    initialValues={{
-                        name: userInfo.name,
-                        password: userInfo.password,
-                    }}
+                    initialValues={userInfo}
                     onFinish={handleFormSubmit}
                 >
                     <Form.Item label="User Photo">
@@ -47,8 +51,8 @@ const UserSettings = () => {
                                 alt="user"
                                 style={{ width: '150px', height: '100px', borderRadius: '50%' }}
                             />
-                            <Button icon={<UploadOutlined />}>Change Photo</Button>
                         </Upload>
+                        <Button icon={<UploadOutlined />}>Change Photo</Button>
                     </Form.Item>
 
                     <Form.Item
@@ -76,6 +80,7 @@ const UserSettings = () => {
                     </Form.Item>
                 </Form>
             </div>
+            <Outlet />
         </>
     );
 };

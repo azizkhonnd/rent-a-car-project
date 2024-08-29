@@ -1,12 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { BiUserCircle } from "react-icons/bi";
-import { IoIosSettings } from "react-icons/io";
-import { IoIosNotifications } from "react-icons/io";
+import { IoIosSettings, IoIosNotifications } from "react-icons/io";
 import { AiFillHeart } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import './header.css'
-import { AutoComplete, Input, Layout, Menu, Badge } from 'antd'; // Import Badge
-import siteLogo from './site-logo.svg'
+import { AutoComplete, Input, Layout, Menu, Badge } from 'antd';
 import type { MenuProps } from 'antd';
 import {
     DesktopOutlined,
@@ -17,7 +13,9 @@ import {
 } from '@ant-design/icons';
 import { useState } from 'react';
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../redux/store"; 
+import siteLogo from './site-logo.svg';
+import './header.css';
 
 const { Sider } = Layout;
 
@@ -53,7 +51,9 @@ const Header = () => {
     const [collapsed, setCollapsed] = useState(true);
     const location = useLocation();
     const isHomePage = location.pathname === '/';
-    const likedCarsCount = useSelector((state: RootState) => state.likedCars.cars.length); // Get liked cars count
+
+    // Use the useSelector hook to access the liked cars count from the Redux state
+    const likedCarsCount = useSelector((state: RootState) => state.likedCars.cars.length);
 
     return (
         <div className='headerContainer'>
@@ -88,7 +88,6 @@ const Header = () => {
                             <Link to='/liked-cars'>
                                 <Badge count={likedCarsCount} overflowCount={9} offset={[0, 10]}>
                                     <button className="header__btn"><AiFillHeart size={26} />
-
                                     </button>
                                 </Badge>
                             </Link>
