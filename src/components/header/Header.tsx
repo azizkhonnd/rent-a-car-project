@@ -86,15 +86,19 @@ const Header = () => {
                         </div>
                         <div className="header__btns">
                             <Link to='/liked-cars'>
-                                <Badge count={likedCarsCount} overflowCount={9} offset={[0, 10]}> 
+                                <Badge count={likedCarsCount} overflowCount={9} offset={[0, 10]}>
                                     <button className="header__btn"><AiFillHeart size={26} />
-                                    
+
                                     </button>
                                 </Badge>
                             </Link>
                             <button className="header__btn"><IoIosNotifications size={26} /></button>
-                            <button className="header__btn"><IoIosSettings size={26} /></button>
-                            <button className="header__btn"><BiUserCircle size={26} /></button>
+                            <Link to='/user-settings'>
+                                <button className="header__btn"><IoIosSettings size={26} /></button>
+                            </Link>
+                            <Link to='/user-info'>
+                                <button className="header__btn"><BiUserCircle size={26} /></button>
+                            </Link>
                         </div>
                     </div>
                 </Layout>

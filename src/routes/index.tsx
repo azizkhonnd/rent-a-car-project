@@ -8,12 +8,15 @@ import Login from "./auth/sign-in/Login";
 import OtpVerified from "./auth/otp-page/Otp";
 import Auth from "./auth/Auth";
 import LikedCars from './likedCar-page/LikedCars';
+import UserInfo from "./user-info/UserInfo";
+import UserSettings from "./user-settings/UserSettings";
 
 const RouteController = () => {
   return useRoutes([
     {
       path: "",
       element: <Home />,
+
     },
     {
       path: "dashboard",
@@ -21,13 +24,13 @@ const RouteController = () => {
       children: [
         {
           path: "create",
-          element: <Create />
-        }
-      ]
+          element: <Create />,
+        },
+      ],
     },
     {
       path: "cars/:id",
-      element: <SingleCarPage />
+      element: <SingleCarPage />,
     },
     {
       path: "auth",
@@ -35,22 +38,31 @@ const RouteController = () => {
       children: [
         {
           path: "sign-up",
-          element: <Register />
+          element: <Register />,
         },
         {
           path: "sign-in",
-          element: <Login />
+          element: <Login />,
         },
         {
           path: "verify-otp",
-          element: <OtpVerified email={""} />
+          element: <OtpVerified email={""} />,
         },
-      ]
+      ],
     },
     {
       path: "liked-cars",
-      element: <LikedCars />
-    }
+      element: <LikedCars />,
+    },
+    {
+      path: "user-settings",
+      element: <UserSettings />,
+
+    },
+    {
+      path: "user-info",
+      element: <UserInfo />,
+    },
   ]);
 };
 
