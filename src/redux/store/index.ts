@@ -3,6 +3,7 @@ import authSlice from '../slices/auth-slice';
 import likedCarsSlice from '../slices/car-slice-liked';
 import formSlice from '../slices/form-slice';
 import userInfoSlice from '../slices/user-slice';
+import checkInSlice from '../slices/form-slice'; 
 import { api } from '../api';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     form: formSlice,
     likedCars: likedCarsSlice,
     userInfo: userInfoSlice,
+    checkIn: checkInSlice, 
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>

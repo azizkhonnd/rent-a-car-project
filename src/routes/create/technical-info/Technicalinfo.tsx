@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Input, Button, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { useDispatch } from 'react-redux';
+import { fillTechnicalInfo } from '../../../redux/slices/form-slice';
 
 const { Option } = Select;
 
@@ -11,10 +13,11 @@ interface StepProps {
 
 const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
     const [form] = useForm();
+    const dispatch = useDispatch();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onFinish = (values: any) => {
-        console.log(values);
+        dispatch(fillTechnicalInfo(values));
         handleNext();
     };
 
@@ -36,7 +39,7 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                         name="model"
                         rules={[{ required: true, message: 'Please input the model!' }]}
                         className="col-span-2"
-        
+
                     >
                         <Input className="border-primary capitalize rounded-md shadow-sm w-full" />
                     </Form.Item>

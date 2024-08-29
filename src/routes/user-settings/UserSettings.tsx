@@ -26,11 +26,12 @@ const UserSettings = () => {
         message.success('User info updated successfully!');
     };
 
-    const handlePhotoUpload = (info: { file: { originFileObj?: Blob | MediaSource; }; }) => {
-        const file = info.file.originFileObj;
+    const handlePhotoUpload = (info: any) => {
+        console.log('Upload Info:', info); 
+
+        const file = info.file?.originFileObj;
 
         if (file) {
-            console.log("File Object:", file);
             const photoUrl = URL.createObjectURL(file);
 
             setUserInfo({
@@ -41,7 +42,8 @@ const UserSettings = () => {
             dispatch(updateUserInfo({ avatar: photoUrl }));
             message.success('Photo uploaded successfully!');
         } else {
-            message.error('Failed to upload the photo.');
+            message.error('Failed to upload the photo. File is undefined.');
+            console.error('File is undefined:', info.file); 
         }
     };
 
@@ -61,8 +63,8 @@ const UserSettings = () => {
                                     name="avatar"
                                     listType="picture-card"
                                     showUploadList={false}
-                                    beforeUpload={() => false}  
-                                    onChange={handlePhotoUpload}  
+                                    beforeUpload={() => false}
+                                    onChange={handlePhotoUpload}
                                 >
                                     <img
                                         src={userInfo.photo}
@@ -70,7 +72,6 @@ const UserSettings = () => {
                                         style={{ width: '150px', height: '100px', borderRadius: '50%' }}
                                     />
                                 </Upload>
-
                             </div>
                             <Button icon={<UploadOutlined />}>Change Photo</Button>
                         </Form.Item>
