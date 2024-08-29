@@ -66,7 +66,7 @@ const CheckIn: React.FC<CheckInProps> = ({ handleNext, handleBack }) => {
         dataSource={data}
         pagination={false}
         bordered
-        scroll={{ y: 300 }}  // Set the vertical scroll height as needed
+        scroll={{ y: 300 }}  
       />
 
       <div className="mt-8 flex justify-between">
