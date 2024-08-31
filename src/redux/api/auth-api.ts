@@ -44,7 +44,7 @@ const authApi = api.injectEndpoints({
 
     verifyOtp: build.mutation<{ token: string }, { email: string; otp: string }>({
       query: (data) => ({
-        url: "/auth/verify-otp",
+        url: "/auth/send-otp",
         method: "POST",
         body: data,
       }),

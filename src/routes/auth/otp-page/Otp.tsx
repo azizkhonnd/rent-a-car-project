@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Flex, Input, Typography, Button, Spin } from 'antd';
 import { useVerifyOtpMutation, useResendOtpMutation } from '../../../redux/api/auth-api';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 type OTPProps = React.ComponentProps<typeof Input.OTP>;
 
@@ -16,11 +17,11 @@ const Otp: React.FC<OtpProps> = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState('');
   const [isPageLoading, setIsPageLoading] = useState(true);
-  const [verifyOtp, { isLoading, isError, isSuccess }] = useVerifyOtpMutation();
+  const [verifyOtp, { isLoading, isError }] = useVerifyOtpMutation();
   const [resendOtp] = useResendOtpMutation();
+  const navigate = useNavigate();
 
   const onChange: OTPProps['onChange'] = (e) => {
-    console.log(e);
     setOtp(e);
   };
 
@@ -35,7 +36,7 @@ const Otp: React.FC<OtpProps> = () => {
     try {
       const response = await verifyOtp({ email, otp });
       if (response) {
-        console.log('OTP Verified:', response);
+        navigate('/auth/sign-in');
       }
     } catch (error) {
       console.error('Verification failed:', error);
@@ -69,8 +70,6 @@ const Otp: React.FC<OtpProps> = () => {
     (_, first, middle, last) => first + '*'.repeat(middle.length) + last
   );
 
-  console.log(resentCount);
-
   if (isPageLoading) {
     return (
       <div className='w-full mt-40 flex items-center justify-center'>
@@ -85,9 +84,15 @@ const Otp: React.FC<OtpProps> = () => {
         <Flex gap="middle" align="flex-start" vertical>
           <div className='flex items-center w-full justify-between flex-col'>
             <Typography className='text-center text-[24px] text-[#000] font-semibold mb-5'>OTP Verification</Typography>
-            <div className='flex w-full justify-between items-center'>
-              <Typography className='text-center text-[14px] text-[gray]'>We sent an OTP to</Typography>
-              <Typography className='text-center text-[16px] text-[#000] font-semibold'> {maskedEmail}</Typography>
+            <div className='flex w-full justify-between'>
+              <div className='flex w-full justify-between items-center gap-1'>
+                <div>
+                  <Typography className='text-center text-[14px] text-[gray]'>We sent an OTP to </Typography>
+                </div>
+                <div>
+                  <Typography className='text-center text-[16px] text-[#000] font-semibold'> {maskedEmail}</Typography>
+                </div>
+              </div>
             </div>
           </div>
           <div className='w-full text-center'>
@@ -116,7 +121,6 @@ const Otp: React.FC<OtpProps> = () => {
             </Button>
           </div>
           {isError && <Typography className='text-red-500 text-center'>OTP verification failed.</Typography>}
-          {isSuccess && <Typography className='text-green-500 text-center'>OTP verified successfully!</Typography>}
         </Flex>
       </div>
     </div>
@@ -124,3 +128,7 @@ const Otp: React.FC<OtpProps> = () => {
 };
 
 export default Otp;
+
+
+//ociwg4k@tmpnator.live
+//gG12345678*

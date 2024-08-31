@@ -33,16 +33,8 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                 onFinish={onFinish}
                 className="space-y-2"
             >
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                    <Form.Item
-                        label="Model"
-                        name="model"
-                        rules={[{ required: true, message: 'Please input the model!' }]}
-                        className="col-span-2"
-
-                    >
-                        <Input className="border-primary capitalize rounded-md shadow-sm w-full" />
-                    </Form.Item>
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                   
                     <Form.Item
                         label="Year"
                         name="year"
@@ -57,8 +49,6 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                             ))}
                         </Select>
                     </Form.Item>
-                </div>
-                <div className="grid grid-cols-3 gap-4 mb-2">
                     <Form.Item
                         label="Mileage"
                         name="mileage"
@@ -67,6 +57,8 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                     >
                         <Input type='number' className="border-primary rounded-md shadow-sm w-full" />
                     </Form.Item>
+                </div>
+                <div className="grid grid-cols-3 gap-4 mb-2">
                     <Form.Item
                         label="Engine Type"
                         name="engineType"
@@ -93,8 +85,6 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                             ))}
                         </Select>
                     </Form.Item>
-                </div>
-                <div className="grid grid-cols-3 gap-4 mb-4">
                     <Form.Item
                         label="Car Price"
                         name="carPrice"
@@ -103,14 +93,16 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                     >
                         <Input type='number' className="border-primary rounded-md shadow-sm w-full" />
                     </Form.Item>
-                    <Form.Item
-                        label="Car Rent Price"
-                        name="carRentPrice"
-                        rules={[{ required: true, message: 'Please input the car rent price!' }]}
-                        className="col-span-1"
-                    >
-                        <Input type='number' className="border-primary rounded-md shadow-sm w-full" />
-                    </Form.Item>
+                </div>
+                <div className="grid grid-cols-3 gap-4 mb-4">
+                        <Form.Item
+                            label="Car Rent Price"
+                            name="carRentPrice"
+                            rules={[{ required: true, message: 'Please input the car rent price!' }]}
+                            className="col-span-1"
+                        >
+                            <Input type='number' className="border-primary rounded-md shadow-sm w-full" />
+                        </Form.Item>
                     <Form.Item
                         label="Seats"
                         name="carDiscount"
@@ -119,8 +111,6 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                     >
                         <Input type='number' className="border-primary rounded-md shadow-sm w-full" />
                     </Form.Item>
-                </div>
-                <div className="grid grid-cols-3 gap-4 mb-4">
                     <Form.Item
                         label="Capacity"
                         name="capacity"
@@ -129,6 +119,8 @@ const TechnicalInfo: React.FC<StepProps> = ({ handleNext, handleBack }) => {
                     >
                         <Input type='number' className="border-primary rounded-md shadow-sm w-full" />
                     </Form.Item>
+                </div>
+                <div className="grid grid-cols-3 gap-4 mb-4">
                     <Form.Item
                         label="Fuel (in litres)"
                         name="fuel"

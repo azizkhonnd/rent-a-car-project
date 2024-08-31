@@ -14,6 +14,40 @@ body {
     @apply px-4 py-6;
 }
 
+.textGradient {
+    background: linear-gradient(to top, #82f799, #2ce344);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.textGradientBmw {
+    background: linear-gradient(to top, #5f635f, #060806);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.textGradientToyota {
+    background: linear-gradient(to top, #a9aba9, #4b524b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.textGradientMercedes {
+    background: linear-gradient(to top, #cbce09, #e1e506 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.textGradientRover {
+    background: linear-gradient(to top, #eeb29a, #d3320a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 :where(.css-dev-only-do-not-override-1c0na6j).ant-input-search-large .ant-input-search-button {
     height: 39px;

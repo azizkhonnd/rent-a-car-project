@@ -25,7 +25,7 @@ const CardComponent = ({
   isLikedPage?: boolean;
 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const likedCars = useSelector((state: RootState) => state.likedCars.cars);
   const liked = likedCars.some((likedCar) => likedCar._id === car._id);
@@ -35,7 +35,7 @@ const CardComponent = ({
     car: Car,
     type: string
   ) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
 
     if (type === "like") {
       dispatch(likeCar(car));
@@ -99,7 +99,8 @@ const CardComponent = ({
             <img
               src={car.thumbnail}
               alt={car.name}
-              style={{ width: "100%", height: 160, objectFit: "contain" }}
+              className="scale-x-[-1]"
+              style={{ width: "100%", height: 160, objectFit: "contain", boxShadow: '0px 10px 40px -25px rgba(gray, 0.5)' }}
             />
             <button
               className={`like__btn ${liked ? "liked" : ""}`}
@@ -118,7 +119,7 @@ const CardComponent = ({
             >
               {liked ? <AiFillHeart /> : <AiOutlineHeart />}
             </button>
-            
+
           </>
         )}
 

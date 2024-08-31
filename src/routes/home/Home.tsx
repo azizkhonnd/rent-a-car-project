@@ -1,13 +1,26 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useRef } from "react";
 import { CgArrowsExchangeAltV } from "react-icons/cg";
 import CardComponent from "../../components/card/Card";
 import { useGetCarsQuery } from "../../redux/api/car-api";
 import Header from "../../components/header/Header";
 import { Car } from "../../types/dataTypes";
 import mainImg1 from "./img/main-img1.svg";
+import Urus from './img/Urus.webp'
+import Bmw from './img/bmw.webp'
+import Toyota from './img/toyota.png'
+import RangeRover from './img/range-rover.png'
+import AstonMartin from './img/astonMartin.png'
+import Mercedes from './img/mercedes-yellow.png'
+import Corvette from './img/corvette.png'
+import BmwX7 from './img/bmwx7.png'
 import mainImg2 from "./img/main-img2.svg";
 import { BiChevronDown } from "react-icons/bi";
 import { BiChevronUp } from "react-icons/bi";
+import { Carousel } from "antd";
+import Footer from '../../../src/components/footer/Footer'
+
+
 
 const fallbackCar: Car = {
   _id: "",
@@ -38,13 +51,52 @@ const Home = () => {
   const { data, isLoading } = useGetCarsQuery();
   const [showDateInput, setShowDateInput] = useState(false);
   const [showTimeInput, setShowTimeInput] = useState(false);
+  const carouselRef = useRef<any>(null);
 
   const toggleDateInput = () => setShowDateInput(!showDateInput);
   const toggleTimeInput = () => setShowTimeInput(!showTimeInput);
 
+
+
   return (
     <>
       <Header />
+      <Carousel autoplay className="bg-slate-200 h-[740px]" ref={carouselRef}>
+
+        <div>
+          <h1 className="textGradient text-center w-full font-bold mt-8 text-[150px] mb-[35px] ">Lamborghini Urus</h1>
+          <img src={Urus} alt="Car 1" className="w-[95%] mx-auto zIndex: '1000px' mt-[-120px] h-[540px]  relative z-50" />
+        </div>
+        <div>
+          <h1 className="textGradientBmw text-center w-full font-bold mt-8 text-[150px] h-[250px] ">BMW i7 Series</h1>
+          <img src={Bmw} alt="Car 2" className="w-[85%] mx-auto scale-x-[-1] zIndex: '1000px'  mt-[-200px] h-[100%]  relative z-50" />
+        </div>
+        <div>
+          <h1 className="textGradientRover text-center w-full font-bold mt-8 text-[150px]  ">Range Rover</h1>
+          <img src={RangeRover} alt="Car 3" className="w-[85%] mx-auto scale-x-[-1] zIndex: '1000px' mt-[-45px] h-[100%]  relative z-50" />
+        </div>
+        <div>
+          <h1 className="textGradientToyota text-center w-full font-bold mt-8 text-[150px]  ">Toyota Land Cruiser</h1>
+          <img src={Toyota} alt="Car 4" className="w-[85%] mx-auto zIndex: '1000px' scale-x-[-1] mt-[-80px] h-[100%]  relative z-50" />
+        </div>
+        <div>
+          <h1 className="textGradientToyota text-center w-full font-bold mt-8 text-[150px]  ">Aston Martin DBX</h1>
+          <img src={AstonMartin} alt="Car 5" className="w-[100%] mx-auto zIndex: '1000px' scale-x-[-1] mt-[-80px] h-[100%]  relative z-50" />
+        </div>
+        <div>
+          <h1 className="textGradientMercedes text-center w-full font-bold mt-8 text-[150px] ">Mercedes Benz</h1>
+          <img src={Mercedes} alt="Car 6" className="w-[75%] mx-auto zIndex: '1000px' scale-x-[-1] mt-[-60px] h-[85%]  relative z-50" />
+        </div>
+        <div>
+          <h1 className="textGradientRover text-center w-full font-bold mt-8 text-[150px]  ">Chevrolet Corvette</h1>
+          <img src={Corvette} alt="Car 6" className="w-[75%] mx-auto zIndex: '1000px' scale-x-[-1] mt-[-80px] h-[85%]  relative z-50" />
+        </div>
+        <div>
+          <h1 className="textGradientToyota text-center w-full font-bold mt-8 text-[150px]  ">BMX X Series</h1>
+          <img src={BmwX7} alt="Car 6" className="w-[75%] mx-auto zIndex: '1000px'  mt-[-170px] h-[85%]  relative z-50" />
+        </div>
+
+      </Carousel>
       <div className="container home__items-top">
         <div className="flex gap-5">
           <div className="home__items-top-left bg-blue-400 w-[616px] h-[360px] p-5 rounded-lg">
@@ -257,6 +309,7 @@ const Home = () => {
             <CardComponent key={car._id} isLoading={false} car={car} />
           ))}
       </div>
+      <Footer />
     </>
   );
 };

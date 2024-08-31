@@ -14,7 +14,6 @@ const CheckIn: React.FC<CheckInProps> = ({ handleNext, handleBack }) => {
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.checkIn);
 
-  // Define columns for the table
   const columns = [
     {
       title: 'Field',
@@ -28,7 +27,6 @@ const CheckIn: React.FC<CheckInProps> = ({ handleNext, handleBack }) => {
     },
   ];
 
-  // Prepare data for the table
   const data = [
     { key: '1', field: 'Car Company', value: formData.name || 'N/A' },
     { key: '2', field: 'Car Model', value: formData.model || 'N/A' },

@@ -5,7 +5,7 @@ const uploadApi = api.injectEndpoints({
     endpoints: (build) => ({
         uploadMultipleFiles: build.mutation<UploadImages, FormData>({
             query: (body) => ({
-                url: "/upload/multiple",
+                url: "upload/multiple",
                 method: "POST",
                 body
             }),
@@ -13,7 +13,7 @@ const uploadApi = api.injectEndpoints({
         }),
         uploadSingleFile: build.mutation<UploadImage, FormData>({
             query: (body) => ({
-                url: "/upload/single",
+                url: "upload/single",
                 method: "POST",
                 body
             }),

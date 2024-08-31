@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Typography, Button, Form, Input, message } from "antd";
 import { useSignInMutation } from "../../../redux/api/auth-api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import type { SignInRequest } from "../../../redux/api/auth-api";
 
 const { Title, Text } = Typography;
@@ -89,9 +89,9 @@ const Login: React.FC = () => {
         <div style={{ textAlign: "center", marginTop: "16px" }}>
           <Text>
             Don't have an account?{" "}
-            <a onClick={() => navigate("/auth/sign-up")} style={{ color: "#1E90FF" }}>
-              Sign Up
-            </a>
+            <Link to='/auth/sign-up'>
+              sign-up
+            </Link>
           </Text>
         </div>
       </div>
