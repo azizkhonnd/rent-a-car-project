@@ -12,11 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { likeCar, unlikeCar } from "../../redux/slices/car-slice-liked";
 import { RootState } from "../../redux/store";
 import "./SinglePage.css";
+import Footer from '../../components/footer/Footer';
 
 const SingleCarPage = () => {
     const { id } = useParams();
     const { data, isLoading } = useGetCarsQuery();
-    const [ setMainImageIndex] = useState(0);
+    const [setMainImageIndex] = useState(0);
     const carouselRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -113,7 +114,7 @@ const SingleCarPage = () => {
                     </div>
                     <div className="car-details relative min-h-[98%] bg-white w-[1200px] max-w-[600] p-6">
 
-                      
+
                         <button
                             className={` ${liked ? "liked" : ""}`}
                             onClick={(e) => handleLikeClick(e, car, liked ? "unlike" : "like")}
@@ -166,6 +167,7 @@ const SingleCarPage = () => {
 
                 </div>
             </div>
+            <Footer />
         </>
     );
 };

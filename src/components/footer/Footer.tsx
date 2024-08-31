@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
     return (
         <div>
-            <div className=" footerContainer bg-white pt-[80px]">
+            <div className="footerContainer bg-white pt-[80px]">
                 <div className='container flex w-full justify-between '>
                     <div className="footerLogo">
-                        <img src={siteLogo} alt="site logo" width={148} height={44} />
+                        <Link to='/'>
+                            <img src={siteLogo} alt="site logo" width={148} height={44} />
+                        </Link>
                         <div className="footerText w-[54%] mt-[18px]">
                             <p>Our vision is to provide convenience and help increase your sales business.</p>
                         </div>
@@ -42,7 +44,7 @@ const Footer = () => {
                         <p className='font-semibold'>Terms & Condition</p>
                     </div>
                 </div>
-            </div>  
+            </div>
 
         </div>
     )
